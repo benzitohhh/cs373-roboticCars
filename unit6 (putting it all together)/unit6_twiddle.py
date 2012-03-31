@@ -629,7 +629,7 @@ def twiddle(init_params):
                     if ret[0]:
                         err += ret[1] * 100 + ret[2]
                     else:
-                        err += 99999:
+                        err += 99999
                 err = float(err) / float(k+1)
                 print err
                 if err < best_error:
