@@ -565,15 +565,22 @@ goal = [len(grid)-1, len(grid[0])-1]
 steering_noise    = 0.1
 distance_noise    = 0.03
 measurement_noise = 0.3
-
+# 
+# weight_data       = 0.1
+# weight_smooth     = 0.2
+# p_gain            = 2.0
+# d_gain            = 6.0
+ 
 weight_data       = 0.1
-weight_smooth     = 0.2
-p_gain            = 2.0
+weight_smooth     = 0.169
+p_gain            = 2.450
 d_gain            = 6.0
 
+# Twiddle # 28 [0.10000002980232246, 0.16874999999999993, 2.4498522949218748, 6.0]  ->  138.3
+
     
-# print main(grid, init, goal, steering_noise, distance_noise, measurement_noise, 
-           # weight_data, weight_smooth, p_gain, d_gain)
+print main(grid, init, goal, steering_noise, distance_noise, measurement_noise, 
+           weight_data, weight_smooth, p_gain, d_gain)
 
 
 
@@ -644,4 +651,4 @@ def twiddle(init_params):
     return params
 
 
-twiddle([weight_data, weight_smooth, p_gain, d_gain])
+# twiddle([weight_data, weight_smooth, p_gain, d_gain])
