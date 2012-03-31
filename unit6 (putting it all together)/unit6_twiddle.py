@@ -565,18 +565,22 @@ goal = [len(grid)-1, len(grid[0])-1]
 steering_noise    = 0.1
 distance_noise    = 0.03
 measurement_noise = 0.3
-# 
+
+
+# These were Professor Thrun's original params:
 # weight_data       = 0.1
 # weight_smooth     = 0.2
 # p_gain            = 2.0
 # d_gain            = 6.0
  
+# And these are the params that Twiddle outputted
+# (although my impl took about 15 minutes to converge)
+# Twiddle # 28 [0.10000002980232246, 0.16874999999999993, 2.4498522949218748, 6.0]  ->  138.3
 weight_data       = 0.1
 weight_smooth     = 0.169
 p_gain            = 2.450
 d_gain            = 6.0
 
-# Twiddle # 28 [0.10000002980232246, 0.16874999999999993, 2.4498522949218748, 6.0]  ->  138.3
 
     
 print main(grid, init, goal, steering_noise, distance_noise, measurement_noise, 
