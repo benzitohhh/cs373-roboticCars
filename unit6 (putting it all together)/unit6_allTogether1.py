@@ -490,11 +490,18 @@ def run(grid, goal, spath, params, printflag = False, speed = 0.1, timeout = 100
         estimate = filter.get_position()
 
         ### ENTER CODE HERE
-        #  estimate is [x, y, orientation]
-        # spath[index][0]
-        # spath[index][1]
         
-
+        #  some basic vector calculations
+        dx = spath[index+1][0] - spath[index][0]
+        dy = spath[index+1][1] - spath[index][1]
+        drx = estimate[0] - spath[index][0]
+        dry = estimate[1] - spath[index][1]
+        # us is the robot estimate projected on to the path segment
+        u = (drx * dx + dry * dy) / (dx * dx + dy * dy)
+        #  the cte is the estimate projected on to the normal of path segment
+        cte = (dry * dx - drx * dy) / (dx * dx + dy * dy)
+        if u > 1.0:
+            index += 1
         # ----------------------------------------
 
 
@@ -530,7 +537,7 @@ def main(grid, init, goal, steering_noise, distance_noise, measurement_noise,
     path = plan(grid, init, goal)
     path.astar()
     path.smooth(weight_data, weight_smooth)
-    return run(grid, goal, path.spath, [p_gain, d_gain])
+    return run(grid, goal, path.spath, [p_gain, d_gain], True)
 
     
 
