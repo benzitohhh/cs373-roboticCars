@@ -13,7 +13,7 @@
  
 from math import *
 import random
-
+import pdb
 
 #===============================================================
 #
@@ -321,14 +321,24 @@ which should return a mu of:
  [2.0],
  [5.0]]
 """
-def doit(initial_pos, move1, move2):
-    #
-    #
-    # Add your code here.
-    #
-    #
-    return mu
 
-doit(-3, 5, 3)
+def doit(initial_pos, move1, move2):
+    Omega = matrix([[1., 0., 0.], [0., 0., 0.], [0., 0., 0.]])
+    Xi = matrix([[initial_pos], [0.], [0.]])
+    
+    Omega += matrix([[1., -1., 0.], [-1., 1., 0.], [0., 0., 0.]])
+    Xi    += matrix([[-move1], [move1], [0.]])
+
+    Omega += matrix([[0., 0., 0.], [0., 1., -1.], [0., -1., 1.]])
+    Xi    += matrix([[0.], [-move2], [move2]])
+    
+    Omega.show('Omega:  ')
+    Xi.show('Xi:     ')
+    res = Omega.inverse() * Xi
+    res.show('Result: ')
+    return res
+
+mu = doit(-3, 5, 3)
+print mu
 
 
