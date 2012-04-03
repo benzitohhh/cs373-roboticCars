@@ -43,7 +43,7 @@
  
 from math import *
 import random
-
+import pdb
 
 #===============================================================
 #
@@ -504,11 +504,58 @@ def print_result(N, num_landmarks, result):
 ############## ENTER YOUR CODE BELOW HERE ###################
 
 def slam(data, N, num_landmarks, motion_noise, measurement_noise):
-    #
-    #
-    # Add your code here!
-    #
-    #
+    dim = 2 * (N + num_landmarks)
+    Omega = matrix();
+    Omega.zero(dim, dim)
+    Xi = matrix();
+    Xi.zero(dim, 1)
+
+    # initial position constraint (Robot's initial position is world_size / 2.0, world_size / 2.0)
+    Omega.value[0][0] = 1
+    Omega.value[1][1] = 1
+    Xi.value[0][0] = world_size / 2.0
+    Xi.value[1][0] = world_size / 2.0
+
+    for k in range(len(data)):
+
+        # index of the Robot pose in the matrix/vector
+        n = k * 2
+
+        measurements = data[k][0]
+        motion       = data[k][1]
+
+        # apply measurement constraints
+        for i in range(len(measurements)):
+
+            # m is the index of the landmark in the matrix/vector
+            m = 2 * (N + measurements[i][0])
+
+            for b in range(2):
+                Omega.value[n+b][n+b] += 1.0 / measurement_noise
+                Omega.value[n+b][m+b] += -1.0 / measurement_noise
+                Xi.value[n+b][0]      += -measurements[i][1+b] / measurement_noise
+                
+                Omega.value[m+b][n+b] += -1.0 / measurement_noise
+                Omega.value[m+b][m+b] += 1.0 / measurement_noise
+                Xi.value[m+b][0]      += measurements[i][1+b] / measurement_noise
+
+        # apply motion constraints
+        for b in range(2):
+            Omega.value[n+b][n+b]     += 1.0 / motion_noise
+            Omega.value[n+b][n+2+b]   += -1.0 / motion_noise
+            Xi.value[n+b][0]          += -motion[b] / motion_noise
+            
+            Omega.value[n+2+b][n+b]   += -1.0 / motion_noise
+            Omega.value[n+2+b][n+2+b] += 1.0 / motion_noise
+            Xi.value[n+2+b][0]        += motion[b] / motion_noise
+
+
+    # calculate mu        
+    mu = Omega.inverse() * Xi
+    # Omega.show('Omega: ')
+    # Xi.show('Xi:    ')
+    # mu.show('Mu:    ')
+
     return mu # Make sure you return mu for grading!
         
 ############### ENTER YOUR CODE ABOVE HERE ###################
@@ -609,15 +656,15 @@ test_data2 = [[[[0, 26.543274387283322, -6.262538160312672], [3, 9.9373968257997
 
 ### Uncomment the following three lines for test case 1 ###
 
-#result = slam(test_data1, 20, 5, 2.0, 2.0)
-#print_result(20, 5, result)
-#print result
+# result = slam(test_data1, 20, 5, 2.0, 2.0)
+# print_result(20, 5, result)
+# print result
 
 
 ### Uncomment the following three lines for test case 2 ###
 
-#result = slam(test_data2, 20, 5, 2.0, 2.0)
-#print_result(20, 5, result)
-#print result
+# result = slam(test_data2, 20, 5, 2.0, 2.0)
+# print_result(20, 5, result)
+# print result
 
 
