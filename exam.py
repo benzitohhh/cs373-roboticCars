@@ -87,7 +87,7 @@ def build_road(length, lane_speeds, print_flag = False, obstacles = False, obsta
 # lane_change_cost.
 #
 def plan(road, lane_change_cost, init, goal): # Don't change the name of this function!
-    # show(road, "road")
+    show(road, "road")
     
     delta = [[0, 1],    # forward
              [-1, 1],   # forward left
@@ -215,5 +215,5 @@ testing_suite = [[test_road1, test_road2, test_road3, test_road4],
                  [true_cost1, true_cost2, true_cost3, true_cost4]]
 
 # solution_check(testing_suite) #UNCOMMENT THIS LINE TO TEST YOUR CODE
-# user_cost = plan(testing_suite[0][0], testing_suite[1][0], testing_suite[2][0], testing_suite[3][0])
+# user_cost = plan(testing_suite[0][0], 100, testing_suite[2][0], testing_suite[3][0])
 
